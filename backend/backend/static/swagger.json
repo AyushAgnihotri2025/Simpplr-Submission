@@ -1,0 +1,887 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Student Management - Ayush Agnihotri",
+    "description": "<h1>Project Submission for Simpplr.</h1>\n\n**Topic:** Problem Statement #5: Student Management Application (Console-Based/ Backend & Business Logic)\n\n**Developer:** Ayush Agnihotri [(@AyushAgnihotri2025)](https://github.com/AyushAgnihotri2025)<br>\n**Email:** [ayushagnihotri2025@gmail.com](mailto:ayushagnihotri2025@gmail.com)\n<br><br>\n\n**Some useful links:**\n- [Github Repository](https://github.com/AyushAgnihotri2025/Simpplr-Submission)\n- [Postman Workspace](https://www.postman.com/mrayush/workspace/simpplr)",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8080/api/v1"
+    },
+    {
+      "url": "https://simpplr.mrayush.in/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Student Management",
+      "description": "It contains all required API's."
+    }
+  ],
+  "paths": {
+    "/getAll": {
+      "get": {
+        "tags": [
+          "Student Management"
+        ],
+        "summary": "Get All Students",
+        "description": "It get the list of all students in DataBase",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "class",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "To get the data of specific class"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The page no. which data you want."
+          },
+          {
+            "in": "query",
+            "name": "count",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of data you want in a single page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/get": {
+      "get": {
+        "tags": [
+          "Student Management"
+        ],
+        "summary": "Full Details of a specific student",
+        "description": "It get the all details of specific student",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Student Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentDetailsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/search": {
+      "get": {
+        "tags": [
+          "Student Management"
+        ],
+        "summary": "Search Students",
+        "description": "It apply filter on Student List",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Name of the student"
+          },
+          {
+            "in": "query",
+            "name": "class_name",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Name of the class"
+          },
+          {
+            "in": "query",
+            "name": "class_id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the class"
+          },
+          {
+            "in": "query",
+            "name": "age",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Age of the student"
+          },
+          {
+            "in": "query",
+            "name": "max_age",
+            "schema": {
+              "type": "integer",
+              "default": 15
+            },
+            "description": "Maximum age of the student"
+          },
+          {
+            "in": "query",
+            "name": "min_age",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Minimum age of the student"
+          },
+          {
+            "in": "query",
+            "name": "percentage",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Percentage of marks obtained"
+          },
+          {
+            "in": "query",
+            "name": "min_percentage",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            },
+            "description": "Minimum percentage of marks obtained"
+          },
+          {
+            "in": "query",
+            "name": "max_percentage",
+            "schema": {
+              "type": "number",
+              "format": "float",
+              "default": 33
+            },
+            "description": "Maximum percentage of marks obtained"
+          },
+          {
+            "in": "query",
+            "name": "grade",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Grade of the student"
+          },
+          {
+            "in": "query",
+            "name": "stream",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Stream of the student"
+          },
+          {
+            "in": "query",
+            "name": "total_marks",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Total marks obtained by the student"
+          },
+          {
+            "in": "query",
+            "name": "min_marks",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Minimum marks obtained by the student"
+          },
+          {
+            "in": "query",
+            "name": "max_marks",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Maximum marks obtained by the student"
+          },
+          {
+            "in": "query",
+            "name": "total_subjects",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Total number of subjects"
+          },
+          {
+            "in": "query",
+            "name": "min_subjects",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Minimum number of subjects"
+          },
+          {
+            "in": "query",
+            "name": "max_subjects",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Maximum number of subjects"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "count",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of records per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentSearchResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/delete": {
+      "delete": {
+        "tags": [
+          "Student Management"
+        ],
+        "summary": "Delete Student",
+        "description": "It delete Student record from DataBase",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Student Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentDeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/deleteMany": {
+      "post": {
+        "tags": [
+          "Student Management"
+        ],
+        "summary": "Delete Multiple Students",
+        "description": "It delete multiple Students record from DataBase at same time.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteManyStudentBody"
+              },
+              "example": {
+                "id": [
+                  14
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteManyStudentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/update": {
+      "post": {
+        "tags": [
+          "Student Management"
+        ],
+        "summary": "Update Record",
+        "description": "It update Student record at DataBase.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Student Id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteManyStudentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Student": {
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "integer",
+            "example": 16
+          },
+          "current_class": {
+            "type": "string",
+            "example": "5th Grade"
+          },
+          "current_class_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date",
+            "example": "2008-05-30T00:00:00.000Z"
+          },
+          "full_name": {
+            "type": "string",
+            "example": "Michael Contreras"
+          },
+          "stream": {
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "student_id": {
+            "type": "integer",
+            "example": 2
+          }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 10
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Student"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "example": 1
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "UnauthorizedResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Session expired. Please log in again."
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "StudentDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "integer",
+            "example": 14
+          },
+          "current_class": {
+            "type": "string",
+            "example": "5th Grade"
+          },
+          "current_class_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date",
+            "example": "2010-06-08T00:00:00.000Z"
+          },
+          "full_name": {
+            "type": "string",
+            "example": "Ashley Park"
+          },
+          "grade": {
+            "type": "string",
+            "example": "F"
+          },
+          "marks": {
+            "type": "object",
+            "properties": {
+              "English": {
+                "type": "integer",
+                "example": 66
+              },
+              "Hindi": {
+                "type": "integer",
+                "example": 33
+              },
+              "Information Technology": {
+                "type": "integer",
+                "example": 35
+              },
+              "Mathematics": {
+                "type": "integer",
+                "example": 60
+              },
+              "Retail": {
+                "type": "integer",
+                "example": 21
+              },
+              "Science": {
+                "type": "integer",
+                "example": 98
+              },
+              "Social Science": {
+                "type": "integer",
+                "example": 13
+              }
+            }
+          },
+          "percentage": {
+            "type": "number",
+            "format": "float",
+            "example": 46.57
+          },
+          "stream": {
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "student_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "StudentSearch": {
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "integer",
+            "example": 16
+          },
+          "current_class": {
+            "type": "string",
+            "example": "5th Grade"
+          },
+          "current_class_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date",
+            "example": "2008-05-30T00:00:00.000Z"
+          },
+          "full_name": {
+            "type": "string",
+            "example": "Michael Contreras"
+          },
+          "grade": {
+            "type": "string",
+            "example": "F"
+          },
+          "percentage": {
+            "type": "number",
+            "format": "float",
+            "example": 48
+          },
+          "stream": {
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "student_id": {
+            "type": "integer",
+            "example": 2
+          },
+          "total_marks": {
+            "type": "integer",
+            "example": 336
+          },
+          "total_subjects": {
+            "type": "integer",
+            "example": 7
+          }
+        }
+      },
+      "StudentSearchResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 10
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentSearch"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "example": 1
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "StudentDeleteResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Student deleted successfully."
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "DeleteManyStudentResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "(n) student's records deleted successfully."
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "DeleteManyStudentBody": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "UpdateStudentBody": {
+        "type": "object",
+        "required": [
+          "full_name",
+          "date_of_birth",
+          "marks"
+        ],
+        "properties": {
+          "full_name": {
+            "type": "string",
+            "description": "Full name of the student"
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of birth of the student in YYYY-MM-DD format"
+          },
+          "marks": {
+            "type": "object",
+            "description": "Marks obtained in various subjects",
+            "properties": {
+              "English": {
+                "type": "integer",
+                "example": 82,
+                "description": "Marks obtained in English"
+              },
+              "Hindi": {
+                "type": "integer",
+                "example": 0,
+                "description": "Marks obtained in Hindi"
+              },
+              "Information Technology": {
+                "type": "integer",
+                "example": 99,
+                "description": "Marks obtained in Information Technology"
+              },
+              "Mathematics": {
+                "type": "integer",
+                "example": 95,
+                "description": "Marks obtained in Mathematics"
+              },
+              "Retail": {
+                "type": "integer",
+                "example": 93,
+                "description": "Marks obtained in Retail"
+              },
+              "Science": {
+                "type": "integer",
+                "example": 98,
+                "description": "Marks obtained in Science"
+              },
+              "Social Science": {
+                "type": "integer",
+                "example": 99,
+                "description": "Marks obtained in Social Science"
+              }
+            }
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "DeleteManyStudentBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/DeleteManyStudentBody"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
