@@ -2,14 +2,16 @@ import {AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, R
     useEffect,
     useState
 } from "react";
-import API_HOST, {API_INITIAL} from "@/assets/creds";
-import Cookies from "js-cookie";
-import {router} from "next/client";
 import Link from "next/link";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
+import {useRouter} from "next/navigation";
+
+import API_HOST, {API_INITIAL} from "@/assets/creds";
 
 export default function SearchTable({auth_token}: {auth_token: string}) {
+    const router = useRouter();
     const [data, setData] = useState([]);
-    const [success, setSuccess] = useState(true);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -28,7 +30,20 @@ export default function SearchTable({auth_token}: {auth_token: string}) {
                 if (result.success) {
                     setData(result.data || []);
                 } else {
+                    toast.error(
+                        result.message,
+                        {
+                            position: "top-right",
+                            style: {
+                                borderRadius: '10px',
+                                background: '#333',
+                                color: '#fff',
+                            },
+                        }
+                    );
                     setError('Failed to fetch data');
+                    Cookies.remove("Auth-Token");
+                    router.push("/");
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);

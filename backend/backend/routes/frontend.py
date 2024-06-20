@@ -1,18 +1,24 @@
 import os
 
+from flask import send_file
 from flask.wrappers import Request
-from flask import send_from_directory
 from werkzeug.datastructures import Headers
 
 from backend import app
 from backend.wrappers import auth
 
 
-@app.route("/", methods=["GET", "POST"])
-@app.route("/<path:path>", methods=["GET", "POST"])
+@app.route("/", defaults={"path": ""}, methods=["GET", "POST"])
+@app.route("/dashboard/search", defaults={"path": "dashboard/search"}, methods=["GET", "POST"])
+@app.route("/dashboard/search/", defaults={"path": "dashboard/search"}, methods=["GET", "POST"])
+@app.route("/dashboard/getall", defaults={"path": "dashboard/getall"}, methods=["GET", "POST"])
+@app.route("/dashboard/getall/", defaults={"path": "dashboard/getall"}, methods=["GET", "POST"])
 @auth()
-def frontend(req: Request, headers: Headers, path: str = "index.html"):
-    return send_from_directory(
-        os.path.join(os.getcwd(), "frontend", "out"),
-        path
+def homePage(req: Request, headers: Headers, path: str):
+    return send_file(
+        os.path.join(app.static_folder, path, "index.html")
     )
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return send_file(os.path.join(app.static_folder, "404.html")), 404

@@ -11,10 +11,11 @@ import {
     Transition,
 } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import Link from 'next/link'
 
 const navigation = [
-    { name: 'Student List', href: '../dashboard/getall', current: false },
-    { name: 'Search Student', href: '../dashboard/search', current: false },
+    { name: 'Student List', href: '/dashboard/getall', current: false },
+    { name: 'Search Student', href: '/dashboard/search', current: false },
 ]
 
 function classNames(...classes: string[]) {
@@ -51,7 +52,7 @@ export default function Header() {
                                 <div className="hidden sm:ml-6 sm:block">
                                     <div className="flex space-x-4">
                                         {navigation.map((item) => (
-                                            <a
+                                            <Link
                                                 key={item.name}
                                                 href={item.href}
                                                 className={classNames(
@@ -61,7 +62,7 @@ export default function Header() {
                                                 aria-current={item.current ? 'page' : undefined}
                                             >
                                                 {item.name}
-                                            </a>
+                                            </Link>
                                         ))}
                                     </div>
                                 </div>

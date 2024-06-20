@@ -2,13 +2,13 @@ cd frontend
 
 npm install
 npm run build
-npm run export
 
-mv /out/* ../backend/frontend/out
+rm -r ../backend/backend/static
+mkdir ../backend/backend/static
+mv ./out/* ../backend/backend/static
 
-cd ..
+cd ../backend
 
-cd backend
-
+pip install -r requirements.txt
 python -m backend setupDB
 python -m backend
